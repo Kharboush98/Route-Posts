@@ -1,0 +1,44 @@
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap');
+
+@import "tailwindcss";
+
+@plugin './hero.js';
+@source '../node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}';
+@custom-variant dark (&:is(.dark *));
+
+
+@theme{
+    --font-cairo: "Cairo", sans-serif;
+
+    --color-routeBlue: #00298d;
+    --color-border: #c9d5ff;
+}
+
+@layer base{
+    body{
+        font-family: "Cairo", sans-serif; 
+    }
+
+    .nav-link{
+        @apply relative flex items-center gap-1.5 rounded-xl px-2.5 py-2 text-sm font-extrabold transition sm:gap-2 sm:px-3.5 text-slate-600 hover:bg-white/90 hover:text-slate-900;
+    }
+
+    .nav-link-active{
+        @apply relative flex items-center gap-1.5 rounded-xl px-2.5 py-2 text-sm font-extrabold transition sm:gap-2 sm:px-3.5 bg-white text-[#1f6fe5];
+    }
+
+    .tabs-btn-active{
+        @apply flex w-full items-center gap-3 rounded-xl px-3 py-2 text-left text-sm font-bold transition bg-[#e7f3ff] text-[#1877f2];
+    }
+
+    .tabs-btn{
+        @apply mt-1 flex w-full items-center gap-3 rounded-xl px-3 py-2 text-left text-sm font-bold transition text-slate-700 hover:bg-slate-100;
+    }
+}
+
+@layer utilities{
+    .container{
+        width: 80%;
+        margin: auto;
+    }
+}
