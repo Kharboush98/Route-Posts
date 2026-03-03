@@ -19,8 +19,11 @@ export default function UserProfile() {
     }
 
     useEffect(()=> {
-        getUsersPosts(profileData?._id);
-    },[])
+        if(profileData?._id)
+        {
+            getUsersPosts(profileData?._id);
+        }
+    },[profileData])
 
     return (
     <>
