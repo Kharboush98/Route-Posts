@@ -69,3 +69,18 @@ export async function deletePostByID(id)
 
     return data;
 }
+
+export async function likeUnLikePost(id)
+{
+    const token = localStorage.getItem("userToken");
+
+    let data = await axios.put(`${baseURL}/posts/${id}/like` , 
+        {},
+        {
+        headers:{
+            "Authorization": `Bearer ${token}`
+        }
+    });
+
+    return data;
+}

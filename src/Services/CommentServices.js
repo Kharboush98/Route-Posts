@@ -40,3 +40,16 @@ export async function updateComment(postId , commentId , formData) {
 
     return data;
 }
+
+export async function deleteComment(postId , commentId)
+{
+    const token = localStorage.getItem("userToken");
+
+    let data = await axios.delete(`${baseURL}/posts/${postId}/comments/${commentId}` , {
+        headers:{
+            "Authorization": `Bearer ${token}`
+        }
+    })
+
+    return data;
+}

@@ -1,10 +1,10 @@
-import React, { useContext } from 'react'
-import { AiFillLike, AiOutlineRetweet } from 'react-icons/ai'
+import React, { useContext, useEffect } from 'react'
+import { AiFillDislike, AiFillLike, AiOutlineRetweet } from 'react-icons/ai'
 import { FaRegCommentAlt, FaSmile } from 'react-icons/fa'
 import { ImSpinner } from "react-icons/im";
 import { getAvatar } from '../PostCard/PostCard'
 import { Link } from 'react-router'
-import { CreateComment, getAllComments } from '../../Services/CommentServices'
+import { CreateComment, deleteComment, getAllComments } from '../../Services/CommentServices'
 import { useState } from 'react'
 import { IoMdSend } from 'react-icons/io';
 import { FaCamera, FaHourglassEnd } from 'react-icons/fa6';
@@ -14,8 +14,11 @@ import { BsThreeDots } from 'react-icons/bs';
 import { MdDelete, MdOutlineModeEdit } from 'react-icons/md';
 import { useDisclosure } from '@heroui/react';
 import CommentModal from '../CommentModal/CommentModal';
+import { likeUnLikePost } from '../../Services/postServices';
+import { FcLike } from "react-icons/fc";
 
-export default function PostFooter({id, userId, likes , shares , comments ,topComment}) {
+
+export default function PostFooter({id,userId, likes, likesArray = [] , shares , comments ,topComment}) {
 
     const [isLoading , setIsLoading] = useState();
 
@@ -82,15 +85,73 @@ export default function PostFooter({id, userId, likes , shares , comments ,topCo
     const {isOpen, onOpen, onOpenChange} = useDisclosure();
     const [editingComment, setEditingComment] = useState(null);
 
+    //Like //  Unlike Post
+
+    const [likesCount, setLikesCount] = useState(likesArray.length);
+    const [isLiked, setIsLiked] = useState(false);
+
+
+    async function LikePostToggle(postId)
+    {
+
+        const newLikedState = !isLiked;
+        setIsLiked(newLikedState);
+
+        setLikesCount(prev => newLikedState ? prev + 1 : prev - 1);
+
+        try {
+            
+            const response = await likeUnLikePost(postId);
+            console.log(response.data.data);
+            setLikesCount(response.data.data.likesCount);
+
+            toast.success("Like//Dislike Successful");
+
+        } catch (error) {
+            console.log(error);
+            setIsLiked(!newLikedState);
+            setLikesCount(prev => newLikedState ? prev - 1 : prev + 1);
+            toast.error("Like failed")
+        }
+    }
+
+    useEffect(() => {
+        if (!profileData?._id) return;
+
+        setLikesCount(likesArray.length);
+
+        const liked = likesArray.includes(profileData._id);
+        setIsLiked(liked);
+
+    }, [likesArray, profileData]);
+
+
+    //delete comment
+
+    async function deletePostComment(postId, commentId)
+    {
+        try {
+            console.log("clicked");
+            
+            const response = await deleteComment(postId , commentId);
+            console.log(response);
+
+            fetchAllComments(id);
+
+        } catch (error) {
+            console.log(error);
+        }
+    } 
+
     return (
     <>
         {/* post actions : like comment share stats*/}
         <div className='px-4 pb-2 pt-3 text-sm text-slate-500'>
             <div className="flex flex-wrap items-center justify-between gap-2">
                 <div className="flex items-center gap-2">
-                    <AiFillLike />
+                    {isLiked ? <FcLike className='text-red-400'/> : <AiFillLike />} 
                     <button type='button' className='font-semibold transition cursor-pointer hover:text-[#1877f2] hover:underline'>
-                        {likes} likes
+                        {likesCount} likes
                     </button>
                 </div>
 
@@ -117,10 +178,10 @@ export default function PostFooter({id, userId, likes , shares , comments ,topCo
 
         {/* Like comment share actions */}
         <div className='grid grid-cols-3 gap-1 p-1'>
-            <button className='cursor-pointer flex items-center justify-center gap-1.5 rounded-md p-2 text-xs font-semibold transition-colors
+            <button onClick={()=> LikePostToggle(id)} className='cursor-pointer flex items-center justify-center gap-1.5 rounded-md p-2 text-xs font-semibold transition-colors
             disabled:cursor-not-allowed disabled:opacity-50 sm:gap-2 sm:text-sm text-slate-600 hover:bg-slate-100'>
-                <AiFillLike />
-                <span>Like</span>
+                {isLiked ? <AiFillDislike /> : <AiFillLike />}
+                <span>{isLiked ? "Dislike" : "Like"}</span>
             </button>
 
             <button onClick={()=> fetchAllComments(id)} className='cursor-pointer flex items-center justify-center gap-1.5 rounded-md p-2 text-xs font-semibold transition-colors
@@ -185,18 +246,19 @@ export default function PostFooter({id, userId, likes , shares , comments ,topCo
                         {profileData?._id === topComment.commentCreator?._id ? (
                         <>
                             <button onClick={()=> {onOpen(); setEditingComment(topComment); setOpenCommentId(prev=> prev === topComment._id ? null : topComment._id);}} 
-                            className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm font-semibold text-slate-700 hover:bg-slate-50">
+                            className="cursor-pointer flex w-full items-center gap-2 px-3 py-2 text-left text-sm font-semibold text-slate-700 hover:bg-slate-50">
                             <MdOutlineModeEdit />
                             Edit
                             </button>
 
-                            <button className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm font-semibold text-red-700 hover:bg-slate-50">
+                            <button onClick={()=> deletePostComment(id , topComment._id)}
+                            className="cursor-pointer flex w-full items-center gap-2 px-3 py-2 text-left text-sm font-semibold text-red-700 hover:bg-slate-50">
                             <MdDelete />
                             Delete
                             </button>
                         </>
                         ) : (
-                        <button className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm font-semibold text-slate-700 hover:bg-slate-50">
+                        <button className="cursor-pointer flex w-full items-center gap-2 px-3 py-2 text-left text-sm font-semibold text-slate-700 hover:bg-slate-50">
                             <AiFillLike />
                             Like
                         </button>
@@ -232,18 +294,20 @@ export default function PostFooter({id, userId, likes , shares , comments ,topCo
 
                         {profileData?._id === comment.commentCreator?._id ? (
                         <>
-                            <button onClick={()=> {onOpen(); setEditingComment(comment); setOpenCommentId(prev=> prev === comment._id ? null : comment._id);}} className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm font-semibold text-slate-700 hover:bg-slate-50">
+                            <button onClick={()=> {onOpen(); setEditingComment(comment); setOpenCommentId(prev=> prev === comment._id ? null : comment._id);}}
+                            className="cursor-pointer flex w-full items-center gap-2 px-3 py-2 text-left text-sm font-semibold text-slate-700 hover:bg-slate-50">
                             <MdOutlineModeEdit />
                             Edit
                             </button>
 
-                            <button className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm font-semibold text-red-700 hover:bg-slate-50">
+                            <button onClick={()=> deletePostComment(id , comment._id)} 
+                            className="cursor-pointer flex w-full items-center gap-2 px-3 py-2 text-left text-sm font-semibold text-red-700 hover:bg-slate-50">
                             <MdDelete />
                             Delete
                             </button>
                         </>
                         ) : (
-                        <button className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm font-semibold text-slate-700 hover:bg-slate-50">
+                        <button className="cursor-pointer flex w-full items-center gap-2 px-3 py-2 text-left text-sm font-semibold text-slate-700 hover:bg-slate-50">
                             <AiFillLike />
                             Like
                         </button>

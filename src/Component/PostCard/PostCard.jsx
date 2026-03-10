@@ -27,10 +27,8 @@ export function getAvatar(photo){
 }
 
 export default function PostCard({post , fetchAllPosts}) {
-
     // console.log(post);
     
-
     function HandlePostWithoutImage(image ,post)
     {
         if(!image)
@@ -55,7 +53,7 @@ export default function PostCard({post , fetchAllPosts}) {
             
             
             {/* post actions : like comment share stats*/}
-            <PostFooter id={post.id} userId={post.user._id} likes={post.likesCount} shares={post.sharesCount} comments={post.commentsCount} topComment={post.topComment}/>
+            <PostFooter id={post.id} userId={post.user._id} likes={post.likesCount} likesArray={post.likes} shares={post.sharesCount} comments={post.commentsCount} topComment={post.topComment}/>
 
         </article>
       </div>

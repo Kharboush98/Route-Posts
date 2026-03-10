@@ -38,7 +38,7 @@ export default function PostDetails() {
             
             
             {/* post actions : like comment share stats*/}
-            <PostFooter id={post.id} likes={post.likesCount} shares={post.sharesCount} comments={post.commentsCount} topComment={post.topComment}/>
+            <PostFooter id={post.id} likes={post.likesCount} likesArrray={post.likes} shares={post.sharesCount} comments={post.commentsCount} topComment={post.topComment}/>
 
           </article>
         </> : <PostSkeleton/>}
