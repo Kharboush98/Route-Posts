@@ -129,8 +129,10 @@ export default function UserProfile() {
 
                     <div className='space-y-3'>
                         {posts.length > 0 ? 
-                            <>              
-                                {posts && posts.map((post)=> <PostCard key={post.id} post={post} />)}
+                            <>    
+                                <div className='w-[75%] space-y-5 m-auto'>
+                                    {posts && posts.map((post)=> <PostCard key={post.id} post={post} />)}
+                                </div>          
                             </>
                             :
                             <p className='rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm text-slate-500'>

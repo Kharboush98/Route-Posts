@@ -233,6 +233,7 @@ export default function PostFooter({id,userId, likes, likesArray = [] , shares ,
                     <p className='text-gray-800 text-[15px] mt-0.5'>{topComment?.content}</p>
                 </div>
                 <p className='text-gray-500 text-[12px] mt-1 ml-1'>{new Date(topComment?.createdAt).toLocaleString()}</p>
+                <p className='text-gray-500 text-[12px] ml-1'>{topComment?.likes.length} Likes</p>
             </div>
             
             <div className="relative">
@@ -279,7 +280,7 @@ export default function PostFooter({id,userId, likes, likesArray = [] , shares ,
                     <p className='text-gray-800 text-[15px] mt-0.5'>{comment?.content}</p>
                 </div>
                 <p className='text-gray-500 text-[12px] mt-1 ml-1'>{new Date(comment?.createdAt).toLocaleString()}</p>
-            
+                <p className='text-gray-500 text-[12px] ml-1'>{comment?.likes.length} Likes</p>
             </div>
 
             <div className="relative">
