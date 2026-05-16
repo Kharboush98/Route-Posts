@@ -1,5 +1,6 @@
-import React, { createContext, useEffect, useState } from 'react'
+import React, { createContext, useContext, useEffect, useState } from 'react'
 import axios from "axios";
+import { AuthContext } from './AuthContext';
 
 const baseURL = import.meta.env.VITE_BASE_URL;
 
@@ -9,7 +10,8 @@ export default function ProfileContextProvider({children}) {
 
     const [profileData , setProfileData] = useState(null);
 
-    const token = localStorage.getItem("userToken");
+    // const token = localStorage.getItem("userToken");
+    const {token} = useContext(AuthContext);
   
     async function getUserProfile() {
         
