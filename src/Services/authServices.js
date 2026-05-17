@@ -64,3 +64,16 @@ export async function getAllUserProfiles(userId)
 
     return data;
 }
+
+export async function getAllBookmarks()
+{
+    const token = localStorage.getItem("userToken");
+
+    let data = await axios.get(`${baseURL}/users/bookmarks` , {
+        headers:{
+            "Authorization": `Bearer ${token}`,
+        }
+    })
+
+    return data;
+}

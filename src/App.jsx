@@ -12,6 +12,9 @@ import Login from './Pages/Auth/Login/Login'
 import PostDetails from './Pages/PostDetails/PostDetails'
 import SettingsPage from './Pages/SettingsPage/SettingsPage'
 import UserProfile from './Pages/UserProfile/UserProfile'
+import MyPosts from './Pages/MyPosts/MyPosts'
+import Community from './Pages/Community/Community'
+import Saved from './Pages/Saved/Saved'
 
 function App() {
 
@@ -23,6 +26,10 @@ function App() {
         {path:"post/:id" , element: <AppProtectedRoute> <PostDetails/> </AppProtectedRoute>},
         {path:"settings" , element: <AppProtectedRoute> <SettingsPage/> </AppProtectedRoute>},
         {path:"profile" , element: <AppProtectedRoute> <UserProfile/> </AppProtectedRoute>},
+        {path:"myPosts" , element: <AppProtectedRoute> <MyPosts/> </AppProtectedRoute>},
+        {path:"community" , element: <AppProtectedRoute> <Community/> </AppProtectedRoute>},
+        {path:"saved" , element: <AppProtectedRoute> <Saved/> </AppProtectedRoute>},
+        // {path:"*" , element: <AppProtectedRoute> <NewsFeed/> </AppProtectedRoute>}
         {path:"*" , element: <NotFound/>}
       ]
     },

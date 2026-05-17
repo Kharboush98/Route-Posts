@@ -16,6 +16,20 @@ export async function getAllPosts()
     return data;
 }
 
+export async function getAllUserFollowersPosts(userId)
+{
+    const token = localStorage.getItem("userToken");
+
+    let data = await axios.get(`${baseURL}/posts/feed?only=following` , {
+        headers:{
+            "Content-Type" : "application/json",
+            "Authorization": `Bearer ${token}`,
+        }
+    })
+
+    return data;
+}
+
 export async function getPostById(id)
 {
     const token = localStorage.getItem("userToken");

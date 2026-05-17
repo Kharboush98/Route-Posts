@@ -6,10 +6,10 @@ import { BsStars } from "react-icons/bs";
 import { Link, NavLink } from 'react-router';
 
 const tabs = [
-    {to: '/', name: 'Feed' , icon: MdFeed, isActive: true},
-    {to: '/profile', name: 'My Posts' , icon: BsStars, isActive: false},
-    {to: '/', name: 'Community' , icon: TbWorld, isActive: false},
-    {to: '/', name: ' Saved' , icon: FaRegBookmark, isActive: false},
+    {to: '/', name: 'Feed' , icon: MdFeed},
+    {to: '/myPosts', name: 'My Posts' , icon: BsStars},
+    {to: '/community', name: 'Community' , icon: TbWorld},
+    {to: '/saved', name: ' Saved' , icon: FaRegBookmark},
 ]
 
 export default function Tabs() {
@@ -18,7 +18,12 @@ export default function Tabs() {
     <>
         <div className="rounded-2xl border border-slate-200 bg-white p-3 shadow-sm space-y-2.5">
             {tabs.map(({to, name , icon:Icon , isActive}) =>(
-                <NavLink key={name} className={`${isActive ? 'tabs-btn-active' : 'tabs-btn'}`} to={to}>
+                <NavLink 
+                    key={name}
+                    // className={`${isActive ? 'tabs-btn-active' : 'tabs-btn'}`}
+                    className={({ isActive }) => isActive ? 'tabs-btn-active' : 'tabs-btn'}
+                    to={to}
+                    end>
                     <Icon className="text-lg font-extrabold"/>
                     {name}
                 </NavLink>
