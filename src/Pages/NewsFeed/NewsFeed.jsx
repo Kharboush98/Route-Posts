@@ -34,7 +34,7 @@ export default function NewsFeed() {
               <Tabs/>
             </div>
             
-            <div className="col-span-4 lg:col-span-2 space-y-5">
+            <div className="col-span-4 lg:col-span-3 xl:col-span-2 space-y-5">
               <CreatePost callback={fetchAllPosts}/>
 
               {posts.length === 0 ? [...Array(10)].map((_, index) => <PostSkeleton key={index} />) : <>
@@ -44,7 +44,7 @@ export default function NewsFeed() {
               
             </div>
             
-            <div className="col-span-1 hidden lg:block">
+            <div className="col-span-1 hidden lg:hidden xl:block">
               <FriendReq/>
             </div>
 

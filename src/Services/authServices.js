@@ -77,3 +77,31 @@ export async function getAllBookmarks()
 
     return data;
 }
+
+export async function getFollowSuggestion()
+{
+    const token = localStorage.getItem("userToken");
+
+    let data = await axios.get(`${baseURL}/users/suggestions?limit=5` , {
+        headers:{
+            "Authorization": `Bearer ${token}`,
+        }
+    })
+
+    return data;
+}
+
+export async function followUser(userId)
+{
+    const token = localStorage.getItem("userToken");
+
+    let data = await axios.put(`${baseURL}/users/${userId}/follow` , 
+        {},
+        {
+            headers:{
+                "Authorization": `Bearer ${token}`
+            }
+        })
+
+    return data;
+}
