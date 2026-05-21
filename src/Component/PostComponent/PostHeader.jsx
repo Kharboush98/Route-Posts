@@ -10,6 +10,7 @@ import { toast } from 'react-toastify'
 import { deletePostByID } from '../../Services/postServices'
 import PostModal from '../PostModal/PostModal'
 import { useDisclosure } from '@heroui/react'
+import { Link } from 'react-router'
 
 export default function PostHeader({fetchAllPosts, body, image, userId, id, photo , name, username, createdAt , privacy}) {
 
@@ -43,11 +44,15 @@ export default function PostHeader({fetchAllPosts, body, image, userId, id, phot
             <div className='mb-3 flex items-center gap-3'>
                 <img src={getAvatar(photo)} alt={name || 'unknown'} className='h-11 w-11 rounded-full object-cover'/>
                 <div className='flex-1'>
-                    <a className='truncate text-sm font-bold text-foreground hover:underline'
+                    <Link 
+                    to={`/profile/${userId}`}
+                    className='truncate text-sm font-bold text-foreground hover:underline'
                         href=''>{name || 'unknown'}
-                    </a>
+                    </Link>
                     <div className='flex flex-wrap items-center gap-1 text-xs text-muted-foreground space-x-1.5'>
-                        <span>@{username || 'unknown'}.</span>
+                        <Link to={`/profile/${userId}`}>
+                            <span>@{username || 'unknown'}.</span>
+                        </Link>
 
                         <span>{new Date(createdAt).toLocaleString()}.</span>
 

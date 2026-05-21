@@ -29,7 +29,7 @@ export default function PostDetails() {
     <>
       <div className='bg-[#F0F2F5] p-5 min-h-screen'>
         {post ? <>
-          <article className='overflow-visible rounded-xl border border-slate-200 bg-white shadow-sm container'>
+          <article className='overflow-visible max-w-3xl rounded-xl border border-slate-200 bg-white shadow-sm container '>
             {/* header */}
             <PostHeader userId={post.user._id} id={post.id} photo={post.user?.photo} name={post.user?.name} username={post.user?.username} createdAt={post.createdAt} privacy={post?.privacy}/>
 

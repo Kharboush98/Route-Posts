@@ -15,6 +15,7 @@ import UserProfile from './Pages/UserProfile/UserProfile'
 import MyPosts from './Pages/MyPosts/MyPosts'
 import Community from './Pages/Community/Community'
 import Saved from './Pages/Saved/Saved'
+import ProfileDetails from './Pages/ProfileDetails/ProfileDetails'
 
 function App() {
 
@@ -24,6 +25,7 @@ function App() {
       path: "/" , element: <MainLayout/> , children :[
         {index:true , element: <AppProtectedRoute> <NewsFeed/> </AppProtectedRoute>},
         {path:"post/:id" , element: <AppProtectedRoute> <PostDetails/> </AppProtectedRoute>},
+        {path:"profile/:id" , element: <AppProtectedRoute> <ProfileDetails/> </AppProtectedRoute>},
         {path:"settings" , element: <AppProtectedRoute> <SettingsPage/> </AppProtectedRoute>},
         {path:"profile" , element: <AppProtectedRoute> <UserProfile/> </AppProtectedRoute>},
         {path:"myPosts" , element: <AppProtectedRoute> <MyPosts/> </AppProtectedRoute>},

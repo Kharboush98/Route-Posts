@@ -8,7 +8,7 @@ import PostCard from '../../Component/PostCard/PostCard';
 export default function MyPosts() {
 
     const {profileData} = useContext(ProfileContext)
-    const [posts , setPosts]= useState([]);
+    const [posts , setPosts]= useState([]);    
 
     async function getUsersPosts(userId) {
         const response = await getAllUserPosts(userId);

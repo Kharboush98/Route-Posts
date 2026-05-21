@@ -10,7 +10,7 @@ import { IoMdSend } from 'react-icons/io';
 import { FaCamera, FaHourglassEnd } from 'react-icons/fa6';
 import { toast } from 'react-toastify';
 import { ProfileContext } from '../../Context/ProfileContext';
-import { BsThreeDots } from 'react-icons/bs';
+import { BsThreeDots, BsThreeDotsVertical } from 'react-icons/bs';
 import { MdDelete, MdOutlineModeEdit } from 'react-icons/md';
 import { useDisclosure } from '@heroui/react';
 import CommentModal from '../CommentModal/CommentModal';
@@ -166,9 +166,10 @@ export default function PostFooter({id,userId, likes, likesArray = [] , shares ,
                         {comments} Comments
                     </button>
 
-                    <button className='rounded-md px-2 py-1 text-xs font-bold text-[#1877f2] hover:bg-[#e7f3ff]'>
+                    <Link to={`/post/${id}`}
+                        className='rounded-md px-2 py-1 text-xs font-bold text-[#1877f2] hover:bg-[#e7f3ff]'>
                         View Details
-                    </button>
+                    </Link>
 
                 </div>
             </div>
@@ -201,24 +202,61 @@ export default function PostFooter({id,userId, likes, likesArray = [] , shares ,
         <div className='mx-4 border-b border-slate-200 mb-2'></div>
 
         {/* post comment */}
-        <div className="flex items-center gap-2 p-2">
+        <div className="flex flex-wrap items-center gap-2 p-2">
             <input 
                 onChange={(e)=> setCommentBody(e.target.value)} value={commentBody}
                 type="text" placeholder='Comment on Post'
-                className='flex-1 rounded-full border border-slate-200 bg-slate-50 py-3 px-4 text-[17px] leading-relaxed
+                className='flex-1 min-w-0 rounded-full border border-slate-200 bg-slate-50 py-3 px-4 text-[17px] leading-relaxed
                      text-slate-800 outline-none transition focus:border-[#1877f2] focus:bg-white'
             />
 
-            <button onClick={()=>handleAddButton(id)} type='button' disabled={!commentBody} className='p-2.5 disabled:cursor-not-allowed text-[18px] text-blue-400 hover:text-blue-600 rounded-full hover:bg-gray-200'>
-                {/* <IoMdSend/> */}
-                {isLoadingComment ? <FaHourglassEnd/> : <IoMdSend/>}
-            </button>
-            <button type='button' className='p-2.5 text-[18px] text-blue-400 hover:text-blue-600 rounded-full hover:bg-gray-200'>
-                <FaCamera/>
-            </button>
-            <button type='button' className='p-2.5 text-[18px] text-blue-400 hover:text-blue-600 rounded-full hover:bg-gray-200'>
-                <FaSmile/>
-            </button>
+            <div>
+                <div className='flex items-start justify-content-start'>
+                    <button onClick={()=>handleAddButton(id)} type='button' disabled={!commentBody} 
+                        className='hidden sm:flex p-2.5 disabled:cursor-not-allowed text-[18px] text-blue-400 hover:text-blue-600 rounded-full hover:bg-gray-200'>
+                        {/* <IoMdSend/> */}
+                        {isLoadingComment ? <FaHourglassEnd/> : <IoMdSend/>}
+                    </button>
+
+                    <button type='button' 
+                        className='hidden sm:flex p-2.5 text-[18px] text-blue-400 hover:text-blue-600 rounded-full hover:bg-gray-200'>
+                        <FaCamera/>
+                    </button>
+
+                    <button type='button' 
+                        className='hidden sm:flex p-2.5 text-[18px] text-blue-400 hover:text-blue-600 rounded-full hover:bg-gray-200'>
+                        <FaSmile/>
+                    </button>
+                    
+                    <div className='relative'>
+                        <button type='button'  onClick={()=> setOptions(!options)}
+                            className='sm:hidden inline p-2.5 text-[18px] text-blue-400 hover:text-blue-600 rounded-full hover:bg-gray-200'>
+                            <BsThreeDotsVertical/>
+                        </button>
+
+                        {
+                            options && (
+                                <div className="absolute right-0 z-20 mt-2 w-44 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-lg">
+                                <button onClick={()=>handleAddButton(id)} type='button' disabled={!commentBody} className='cursor-pointer flex w-full items-center gap-2 px-3 py-2 text-left text-sm font-semibold text-slate-700 hover:bg-slate-50'>
+                                    {isLoadingComment ? <FaHourglassEnd/> : <IoMdSend/>}
+                                    Post Comment
+                                </button>
+                                <button onClick={()=> {setOptions(!options); }} className='cursor-pointer flex w-full items-center gap-2 px-3 py-2 text-left text-sm font-semibold text-slate-700 hover:bg-slate-50'>
+                                    <FaCamera/>
+                                    Add a Photo
+                                </button>
+                                <button onClick={()=> {setOptions(!options); }} className='cursor-pointer flex w-full items-center gap-2 px-3 py-2 text-left text-sm font-semibold text-red-700 hover:bg-slate-50'>
+                                    <FaSmile/>
+                                    Add an Imoji
+                                </button>
+                            </div>
+                            )
+                        }
+
+                    </div>
+                </div>
+            </div>
+
         </div>
 
         {/* <div className='mx-4 border-t border-slate-200 mt-2 mb-2'></div> */}

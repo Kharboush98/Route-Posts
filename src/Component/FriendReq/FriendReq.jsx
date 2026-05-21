@@ -6,12 +6,16 @@ import { IoMdPersonAdd } from "react-icons/io";
 import { ProfileContext } from '../../Context/ProfileContext';
 import { followUser, getFollowSuggestion } from '../../Services/authServices';
 import { toast } from 'react-toastify';
+import { Link } from 'react-router';
 
 
 export default function FriendReq() {
 
     const {profileData} = useContext(ProfileContext)
     const [users , setUsers]= useState([]);
+
+    const [isLoading , setIsLoading] = useState();
+
 
     async function getFollowersSuggestion()
     {
@@ -24,6 +28,7 @@ export default function FriendReq() {
         console.log(userId)
 
         try {
+            setIsLoading(userId)
             let response = await followUser(userId);
             toast.success(response.data.message);
             await getFollowersSuggestion();
@@ -31,6 +36,8 @@ export default function FriendReq() {
         } catch (error) {
             console.log(error);
             toast.error("Something went wrong");
+        } finally {
+            setIsLoading(null)
         }
     }
 
@@ -69,19 +76,26 @@ export default function FriendReq() {
                 <div key={_user?._id} className="space-y-3">
                     <div className="rounded-xl border border-slate-200 p-2.5">
                         <div className="flex items-center justify-between gap-2">
-                            <button type='button' className='flex min-w-0 items-center gap-2 rounded-lg px-1 py-1 text-left transition hover:bg-slate-50'>
+                            <Link to={`/profile/${_user?._id}`}
+                                className='flex min-w-0 items-center gap-2 rounded-lg px-1 py-1 text-left transition hover:bg-slate-50'>
                                 <img src={_user?.photo} alt="" className='class="h-10 w-10 rounded-full object-cover'/>
                                 <div className="min-w-0">
                                     <p className='truncate text-sm font-bold text-slate-900 hover:underline'>{_user?.name}</p>
                                     <p className='truncate text-xs text-slate-500'>@{_user?.username}</p>
                                 </div>
-                            </button>
+                            </Link>
 
                             <button 
-                            onClick={()=> {follow(_user?._id)}}
-                            className='cursor-pointer inline-flex items-center gap-1 rounded-full px-3 py-1.5 text-xs font-bold transition disabled:opacity-60 bg-[#e7f3ff] text-[#1877f2] hover:bg-[#d8ebff]'>
-                                <IoMdPersonAdd className='mr-0.5'/>
-                                Follow
+                                onClick={()=> {follow(_user?._id)}}
+                                disabled={isLoading === _user?._id}
+                                className='cursor-pointer inline-flex items-center gap-1 rounded-full px-3 py-1.5 text-xs font-bold transition disabled:opacity-60 bg-[#e7f3ff] text-[#1877f2] hover:bg-[#d8ebff]'>
+                                {/* <IoMdPersonAdd className='mr-0.5'/>
+                                Follow */}
+                                {isLoading === _user?._id 
+                                    ? <span className="animate-spin mr-0.5">⏳</span>
+                                    : <IoMdPersonAdd className='mr-0.5'/>
+                                }
+                                {isLoading === _user?._id ? "Following..." : "Follow"}
                             </button>
                         </div>
 

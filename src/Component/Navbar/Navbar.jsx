@@ -45,7 +45,7 @@ export default function NavbarComponent() {
       <header className="sticky top-0 z-50 border-b border-slate-200/90 bg-white/95 backdrop-blur">
         <div className="container">
           <div className="mx-auto flex max-w-7xl items-center justify-between gap-2 py-1.5 sm:gap-3">
-            <div onClick={()=> navigate("/")} className="cursor-pointer flex items-center gap-3">
+            <div onClick={()=> {navigate("/"); window.scrollTo(0, 0);}} className="cursor-pointer flex items-center gap-3">
               <img src={logoImg} alt="logo" className="h-9 w-9 rounded-xl object-cover"/>
               <h1 className="hidden text-xl font-extrabold text-slate-900 sm:block">Route Posts</h1>
             </div>
