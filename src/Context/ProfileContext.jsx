@@ -9,6 +9,7 @@ export const ProfileContext = createContext()
 export default function ProfileContextProvider({children}) {
 
     const [profileData , setProfileData] = useState(null);
+    const [profileLoading, setProfileLoading] = useState(true);
 
     // const token = localStorage.getItem("userToken");
     const {token} = useContext(AuthContext);
@@ -30,6 +31,9 @@ export default function ProfileContextProvider({children}) {
 
         if(token){
             getUserProfile();
+            setProfileLoading(true);
+        }else{
+            setProfileLoading(false);
         }
     }, [token])
   

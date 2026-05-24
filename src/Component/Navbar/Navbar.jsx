@@ -27,7 +27,9 @@ import { NavLink, useNavigate } from "react-router";
 export default function NavbarComponent() {
 
   const {token , setToken} = useContext(AuthContext)
-  const {profileData} = useContext(ProfileContext)
+  const {profileData , profileLoading} = useContext(ProfileContext)
+
+  
 
   const navigate = useNavigate();
 
@@ -76,7 +78,7 @@ export default function NavbarComponent() {
             <Dropdown placement="bottom-end">
               <DropdownTrigger>
                 {profileData?.photo ? 
-                <Avatar
+                (<Avatar
                   isBordered
                   as="button"
                   className="transition-transform"
@@ -84,7 +86,19 @@ export default function NavbarComponent() {
                   name={profileData?.name}
                   size="sm"
                   src={profileData?.photo}
-                /> : <Skeleton className="flex rounded-full w-12 h-12" />}
+                />) : profileLoading ? 
+                  
+                  (<Skeleton className="flex rounded-full w-12 h-12" /> )
+                    : 
+                  (<Avatar
+                  isBordered
+                  as="button"
+                  className="transition-transform"
+                  color="primary"
+                  name={profileData?.name || "User"}
+                  size="sm"
+                  />)
+                  }
                 
               </DropdownTrigger>
               <DropdownMenu aria-label="Profile Actions" variant="flat">
