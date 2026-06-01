@@ -2,7 +2,7 @@ import axios from "axios";
 
 const baseURL = import.meta.env.VITE_BASE_URL;
 
-export async function getAllPosts()
+export async function getAllPosts(pages=1)
 {
     const token = localStorage.getItem("userToken");
 
@@ -10,6 +10,10 @@ export async function getAllPosts()
         headers:{
             "Content-Type" : "application/json",
             "Authorization": `Bearer ${token}`
+        },
+        params:{
+            limit:25,
+            page:pages,
         }
     })
 

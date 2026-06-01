@@ -36,16 +36,11 @@ export default function ProfileDetails() {
             <div className='bg-[#F0F2F5] min-h-screen'>
                 <div className="container px-3 py-4">
                     <section className='overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_2px_10px_rgba(15,23,42,.06)] sm:rounded-[28px]'>
-                        <div className='group/cover relative h-44 rounded-2xl bg-[linear-gradient(112deg,#0f172a_0%,#1e3a5f_36%,#2b5178_72%,#5f8fb8_100%)] sm:h-52 lg:h-60'>
-                            <div className='pointer-events-none absolute right-2 top-2 z-10 flex max-w-[90%] flex-wrap items-center justify-end gap-1.5 opacity-100 transition 
-                            duration-200 sm:right-3 sm:top-3 sm:max-w-none sm:gap-2 sm:opacity-0 sm:group-hover/cover:opacity-100 sm:group-focus-within/cover:opacity-100'>
-                                <label className='pointer-events-auto inline-flex cursor-pointer items-center gap-1 rounded-lg
-                                    bg-black/45 px-2 py-1 text-[11px] font-bold text-white backdrop-blur transition hover:bg-black/60 sm:gap-1.5 sm:px-3 sm:py-1.5 sm:text-xs'>
-                                    Add Cover photo
-                                    <input type="file" className='hidden' accept='image/*' />
-                                </label>
-                            </div>
-                        </div>
+                        {user?.user.cover ? 
+                            <img src={user?.user.cover} alt={user?.user.name} className='relative w-full object-cover h-44 rounded-2xl sm:h-52 lg:h-60'></img> 
+                        : 
+                            <div className='group/cover relative h-44 rounded-2xl bg-[linear-gradient(112deg,#0f172a_0%,#1e3a5f_36%,#2b5178_72%,#5f8fb8_100%)] sm:h-52 lg:h-60'>  </div>
+                        }
 
                         <div className='relative -mt-12 px-3 pb-5 sm:-mt-16 sm:px-8 sm:pb-6'>
                             <div className='rounded-3xl border border-white/60 bg-white/92 p-5 backdrop-blur-xl sm:p-7'>
@@ -69,21 +64,33 @@ export default function ProfileDetails() {
                                         </div>
                                     </div>
 
-                                    <div className='grid w-full grid-cols-3 gap-2 lg:w-130'>
-                                        <div className='rounded-2xl border border-slate-200 bg-white px-3 py-3 text-center sm:px-4 sm:py-4'>
+                                    <div className='flex flex-wrap w-full gap-2 lg:w-130'>
+                                        <div className='flex-1 min-w-20 flex-wrap rounded-2xl border border-slate-200 bg-white px-3 py-3 text-center sm:px-4 sm:py-4'>
                                             <p className="text-[11px] font-bold uppercase tracking-wide text-slate-500 sm:text-xs">Followers</p>
                                             <p className="mt-1 text-2xl font-black text-slate-900 sm:text-3xl">{user?.user.followersCount}</p>
                                         </div>
 
-                                        <div className='rounded-2xl border border-slate-200 bg-white px-3 py-3 text-center sm:px-4 sm:py-4'>
+                                        <div className='flex-1 min-w-20 flex-wrap rounded-2xl border border-slate-200 bg-white px-3 py-3 text-center sm:px-4 sm:py-4'>
                                             <p className="text-[11px] font-bold uppercase tracking-wide text-slate-500 sm:text-xs">Following</p>
-                                            <p className="mt-1 text-2xl font-black text-slate-900 sm:text-3xl">{user?.user.followersCount}</p>
+                                            <p className="mt-1 text-2xl font-black text-slate-900 sm:text-3xl">{user?.user.followingCount}</p>
                                         </div>
 
-                                        <div className='rounded-2xl border border-slate-200 bg-white px-3 py-3 text-center sm:px-4 sm:py-4'>
-                                            <p className="text-[11px] font-bold uppercase tracking-wide text-slate-500 sm:text-xs">Bookmarks</p>
-                                            <p className="mt-1 text-2xl font-black text-slate-900 sm:text-3xl">{user?.user.bookmarksCount}</p>
-                                        </div>
+                                        {user?.isFollowing ? 
+                                        (
+                                            <button className='group flex-1 min-w-20 flex-wrap flex flex-col items-center justify-center rounded-2xl border border-slate-200 bg-white hover:bg-gray-200 cursor-pointer px-3 py-3 text-center sm:px-4 sm:py-4'>
+                                                <p className="text-[11px] font-bold uppercase tracking-wide text-slate-500 sm:text-sm">
+                                                    <span className='group-hover:hidden'>Followed ✔</span>
+                                                    <span className='hidden group-hover:block text-red-500'>UnFollow</span>
+                                                </p>
+                                            </button>
+                                        ) 
+                                        : 
+                                        (
+                                            <button className='flex-1 min-w-20 flex-wrap flex flex-col items-center justify-center rounded-2xl border border-[#d7e7ff] bg-[#eef6ff] hover:bg-gray-200 cursor-pointer px-3 py-3 text-center sm:px-4 sm:py-4'>
+                                                <p className="text-[11px] font-bold uppercase tracking-wide text-[#0b57d0] sm:text-sm">Follow</p>
+                                            </button>
+                                        )
+                                        }
                                     </div>
                                 </div>
 

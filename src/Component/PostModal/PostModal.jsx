@@ -16,8 +16,9 @@ import { ProfileContext } from "../../Context/ProfileContext";
 import { FaImage, FaRegSmile } from "react-icons/fa";
 import { createPost, updatePost } from "../../Services/postServices";
 import { toast } from "react-toastify";
+import { useQueryClient } from "@tanstack/react-query";
 
-export default function PostModal({ isOpen, id, onOpenChange , body , image ,fetchAllPosts }) {
+export default function PostModal({ isOpen, id, onOpenChange , body , image }) {
 
     const {profileData} = useContext(ProfileContext)
 
@@ -28,6 +29,8 @@ export default function PostModal({ isOpen, id, onOpenChange , body , image ,fet
     const [isLoading , setIsLoading] = useState();
 
     const inputPhoto = useRef();
+
+    const queryClient = useQueryClient()
 
     // SetDisplayPhoto(image)
     // SetPostContent(body)
@@ -62,7 +65,8 @@ export default function PostModal({ isOpen, id, onOpenChange , body , image ,fet
                 inputPhoto.current.value = ""
             }
 
-            fetchAllPosts()
+            // fetchAllPosts()
+            queryClient.invalidateQueries({queryKey:["getPosts"]})
 
         } catch (error) {
             console.log(error);

@@ -4,25 +4,34 @@ import FriendReq from '../../Component/FriendReq/FriendReq'
 import { ProfileContext } from '../../Context/ProfileContext';
 import { getAllUserFollowersPosts } from '../../Services/postServices';
 import PostCard from '../../Component/PostCard/PostCard';
+import PostSkeleton from '../../Component/Skeletons/PostSkeleton';
+import { useQuery } from '@tanstack/react-query';
 
 export default function Community() {
 
     const {profileData} = useContext(ProfileContext)
-    const [posts , setPosts]= useState([]);
+    // const [posts , setPosts]= useState([]);
 
-    async function getUsersPosts() {
-        const response = await getAllUserFollowersPosts();
-        // console.log(response.data.data.posts);
-        setPosts(response.data.data.posts);
-    }
+    // async function getUsersPosts() {
+    //     const response = await getAllUserFollowersPosts();
+    //     // console.log(response.data.data.posts);
+    //     setPosts(response.data.data.posts);
+    // }
 
-    useEffect(()=> {
-        if(profileData?._id)
-        {
-            getUsersPosts(profileData?._id);
-        }
-    },[profileData])
+    // useEffect(()=> {
+    //     if(profileData?._id)
+    //     {
+    //         getUsersPosts(profileData?._id);
+    //     }
+    // },[profileData])
 
+
+    const {data : posts , isLoading} = useQuery({
+        queryKey:["getCommunityPosts"],
+        queryFn: ()=> getAllUserFollowersPosts(),
+        select:(data) => data?.data.data.posts,
+        enabled: !!profileData?._id
+    })
 
   return (
     <>
@@ -35,16 +44,20 @@ export default function Community() {
                     </div>
                     
                     <div className="col-span-4 lg:col-span-2 space-y-5">
-                        {posts.length > 0 ? 
-                            <>    
+                        {isLoading ? [...Array(10)].map((_, index) => <PostSkeleton key={index} />) 
+                        : 
+                        posts?.length > 0 ? 
+                            (   
                                 <div className='space-y-5 m-auto'>
                                     {posts && posts.map((post)=> <PostCard key={post.id} post={post} />)}
                                 </div>          
-                            </>
+                            )
                             :
-                            <p className='rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm text-slate-500'>
-                                You have not posted yet.
-                            </p>
+                            (
+                                <p className='rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm text-slate-500'>
+                                    There is no posts yet.
+                                </p>
+                            )
                         }
                     </div>
                     

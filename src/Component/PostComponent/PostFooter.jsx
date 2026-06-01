@@ -16,6 +16,7 @@ import { useDisclosure } from '@heroui/react';
 import CommentModal from '../CommentModal/CommentModal';
 import { likeUnLikePost } from '../../Services/postServices';
 import { FcLike } from "react-icons/fc";
+import { useMutation } from '@tanstack/react-query';
 
 
 export default function PostFooter({id,userId, likes, likesArray = [] , shares , comments ,topComment}) {
@@ -31,6 +32,7 @@ export default function PostFooter({id,userId, likes, likesArray = [] , shares ,
 
     const {profileData} = useContext(ProfileContext)  
 
+    //Show all comments
     async function fetchAllComments(postId)
     {
         try {
@@ -49,37 +51,52 @@ export default function PostFooter({id,userId, likes, likesArray = [] , shares ,
         }
     }
 
+
     //show mnore comments
     const [showMoreComments , setShowMoreComments] = useState(2);
     
-    //write comment
+    //write/create comment
     const [commentBody , setCommentBody] = useState("");
-    const [isLoadingComment , setIsLoadingComment] = useState();
+    // const [isLoadingComment , setIsLoadingComment] = useState();
 
 
-    async function handleAddButton(postId)
-    {
-        try {
-            setIsLoadingComment(true)
-            const formData = new FormData();
-            // console.log(postId , commentBody);
+    // async function handlePostComment(postId)
+    // {
+    //     try {
+    //         setIsLoadingComment(true)
+    //         const formData = new FormData();
+    //         // console.log(postId , commentBody);
 
-            formData.append("content" , commentBody)
-            const response = await CreateComment(postId , formData);
-            // console.log(response);
+    //         formData.append("content" , commentBody)
+    //         const response = await CreateComment(postId , formData);
+    //         // console.log(response);
 
-            setCommentBody("")
-            fetchAllComments(id)
+    //         setCommentBody("")
+    //         fetchAllComments(id)
             
-            toast.success(response.data.message)
+    //         toast.success(response.data.message)
 
-        } catch (error) {
-            console.log(error);
+    //     } catch (error) {
+    //         console.log(error);
+    //         toast.error("comment Failed")
+    //     } finally {
+    //         setIsLoadingComment(false)
+    //     }
+    // }
+
+
+    const {mutate : handlePostComment , isPending: isLoadingComment} = useMutation({
+        mutationFn:(postId)=>{return CreateComment(postId , {"content": commentBody})},
+        onSuccess:(response)=>{
+            setCommentBody("")
+            toast.success(response.data.message)
+            fetchAllComments(id)
+        },
+        onError:(error)=>{
             toast.error("comment Failed")
-        } finally {
-            setIsLoadingComment(false)
+            fetchAllComments(id)
         }
-    }
+    })
 
     //edit comment 
     const {isOpen, onOpen, onOpenChange} = useDisclosure();
@@ -91,30 +108,47 @@ export default function PostFooter({id,userId, likes, likesArray = [] , shares ,
     const [isLiked, setIsLiked] = useState(false);
 
 
-    async function LikePostToggle(postId)
-    {
+    // async function LikePostToggle(postId)
+    // {
 
-        const newLikedState = !isLiked;
-        setIsLiked(newLikedState);
+    //     const newLikedState = !isLiked;
+    //     setIsLiked(newLikedState);
 
-        setLikesCount(prev => newLikedState ? prev + 1 : prev - 1);
+    //     setLikesCount(prev => newLikedState ? prev + 1 : prev - 1);
 
-        try {
+    //     try {
             
-            const response = await likeUnLikePost(postId);
-            console.log(response.data.data);
+    //         const response = await likeUnLikePost(postId);
+    //         console.log(response.data.data);
+    //         setLikesCount(response.data.data.likesCount);
+
+    //         toast.success("Like//Dislike Successful");
+
+    //     } catch (error) {
+    //         console.log(error);
+    //         setIsLiked(!newLikedState);
+    //         setLikesCount(prev => newLikedState ? prev - 1 : prev + 1);
+    //         toast.error("Like failed")
+    //     }
+    // }
+
+    const {mutate: LikePostToggle} = useMutation({
+        mutationFn:(postId)=>likeUnLikePost(postId),
+        onMutate:()=> {
+            const newLikedState = !isLiked;
+            setIsLiked(newLikedState);
+            setLikesCount(prev => newLikedState ? prev + 1 : prev - 1);
+        },
+        onSuccess:(response)=> {
             setLikesCount(response.data.data.likesCount);
-
-            toast.success("Like//Dislike Successful");
-
-        } catch (error) {
-            console.log(error);
+        },
+        onError:(error)=> {
             setIsLiked(!newLikedState);
             setLikesCount(prev => newLikedState ? prev - 1 : prev + 1);
-            toast.error("Like failed")
         }
-    }
+    })
 
+    //
     useEffect(() => {
         if (!profileData?._id) return;
 
@@ -128,20 +162,32 @@ export default function PostFooter({id,userId, likes, likesArray = [] , shares ,
 
     //delete comment
 
-    async function deletePostComment(postId, commentId)
-    {
-        try {
-            console.log("clicked");
+    // async function deletePostComment(postId, commentId)
+    // {
+    //     try {
+    //         console.log("clicked");
             
-            const response = await deleteComment(postId , commentId);
-            console.log(response);
+    //         const response = await deleteComment(postId , commentId);
+    //         console.log(response);
 
-            fetchAllComments(id);
+    //         fetchAllComments(id);
 
-        } catch (error) {
-            console.log(error);
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // }
+
+    const {mutate : deletePostComment} = useMutation({
+        mutationFn:({postId , commentId})=>deleteComment(postId ,commentId),
+        onSuccess:(response)=>{
+            toast.success(response.data.message)
+            fetchAllComments(id)
+        },
+        onError:(error)=>{
+            toast.error("comment delete Failed")
+            fetchAllComments(id)
         }
-    } 
+    })
 
     return (
     <>
@@ -212,10 +258,10 @@ export default function PostFooter({id,userId, likes, likesArray = [] , shares ,
 
             <div>
                 <div className='flex items-start justify-content-start'>
-                    <button onClick={()=>handleAddButton(id)} type='button' disabled={!commentBody} 
+                    <button onClick={()=>handlePostComment(id)} type='button' disabled={!commentBody} 
                         className='hidden sm:flex p-2.5 disabled:cursor-not-allowed text-[18px] text-blue-400 hover:text-blue-600 rounded-full hover:bg-gray-200'>
                         {/* <IoMdSend/> */}
-                        {isLoadingComment ? <FaHourglassEnd/> : <IoMdSend/>}
+                        {isLoadingComment ? <FaHourglassEnd className='animate-spin'/> : <IoMdSend/>}
                     </button>
 
                     <button type='button' 
@@ -237,8 +283,8 @@ export default function PostFooter({id,userId, likes, likesArray = [] , shares ,
                         {
                             options && (
                                 <div className="absolute right-0 z-20 mt-2 w-44 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-lg">
-                                <button onClick={()=>handleAddButton(id)} type='button' disabled={!commentBody} className='cursor-pointer flex w-full items-center gap-2 px-3 py-2 text-left text-sm font-semibold text-slate-700 hover:bg-slate-50'>
-                                    {isLoadingComment ? <FaHourglassEnd/> : <IoMdSend/>}
+                                <button onClick={()=>handlePostComment(id)} type='button' disabled={!commentBody} className='cursor-pointer flex w-full items-center gap-2 px-3 py-2 text-left text-sm font-semibold text-slate-700 hover:bg-slate-50'>
+                                    {isLoadingComment ? <FaHourglassEnd className='animate-spin'/> : <IoMdSend/>}
                                     Post Comment
                                 </button>
                                 <button onClick={()=> {setOptions(!options); }} className='cursor-pointer flex w-full items-center gap-2 px-3 py-2 text-left text-sm font-semibold text-slate-700 hover:bg-slate-50'>
@@ -263,7 +309,7 @@ export default function PostFooter({id,userId, likes, likesArray = [] , shares ,
 
         {/* comments */}
         {(topComment) && 
-        <div className='px-4 py-1 flex gap-3'>
+        <div className='px-4 pt-1 pb-2 flex gap-3'>
             <img src={getAvatar(topComment.commentCreator?.photo)} alt={topComment.commentCreator?.name || 'unknown'} className='h-8 w-8 rounded-full shrink-8' />
             <div className='min-w-0 flex-1'>
                 <div className='bg-gray-100 rounded-2xl rounded-tl-sm px-3 py-2 inline-block'>
@@ -290,7 +336,7 @@ export default function PostFooter({id,userId, likes, likesArray = [] , shares ,
                             Edit
                             </button>
 
-                            <button onClick={()=> deletePostComment(id , topComment._id)}
+                            <button onClick={()=> deletePostComment({postId:id ,  commentId:topComment?._id})}
                             className="cursor-pointer flex w-full items-center gap-2 px-3 py-2 text-left text-sm font-semibold text-red-700 hover:bg-slate-50">
                             <MdDelete />
                             Delete
@@ -339,7 +385,7 @@ export default function PostFooter({id,userId, likes, likesArray = [] , shares ,
                             Edit
                             </button>
 
-                            <button onClick={()=> deletePostComment(id , comment._id)} 
+                            <button onClick={()=> deletePostComment({postId:id ,  commentId:comment?._id})} 
                             className="cursor-pointer flex w-full items-center gap-2 px-3 py-2 text-left text-sm font-semibold text-red-700 hover:bg-slate-50">
                             <MdDelete />
                             Delete

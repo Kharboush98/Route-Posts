@@ -11,12 +11,15 @@ import { deletePostByID } from '../../Services/postServices'
 import PostModal from '../PostModal/PostModal'
 import { useDisclosure } from '@heroui/react'
 import { Link } from 'react-router'
+import { useQueryClient } from '@tanstack/react-query'
 
-export default function PostHeader({fetchAllPosts, body, image, userId, id, photo , name, username, createdAt , privacy}) {
+export default function PostHeader({body, image, userId, id, photo , name, username, createdAt , privacy}) {
 
     const [options , setOptions] = useState(false)
 
     const {isOpen, onOpen, onOpenChange} = useDisclosure();
+
+    const queryClient = useQueryClient()
 
 
     const {profileData} = useContext(ProfileContext)    
@@ -30,7 +33,8 @@ export default function PostHeader({fetchAllPosts, body, image, userId, id, phot
             console.log(response , "response");
             toast.success("Deleted")
 
-            fetchAllPosts();
+            // fetchAllPosts();
+            queryClient.invalidateQueries({queryKey:["getPosts"]})
 
         } catch (error) {
             console.log(error);
@@ -92,7 +96,7 @@ export default function PostHeader({fetchAllPosts, body, image, userId, id, phot
                         )
                     }
                 </div>
-                <PostModal isOpen={isOpen} onOpenChange={onOpenChange} id={id} body={body} image={image} fetchAllPosts={fetchAllPosts}/>
+                <PostModal isOpen={isOpen} onOpenChange={onOpenChange} id={id} body={body} image={image}/>
             </div>
         </div>
     </>

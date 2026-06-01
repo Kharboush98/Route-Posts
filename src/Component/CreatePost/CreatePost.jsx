@@ -9,6 +9,7 @@ import { Button, Input, Skeleton } from '@heroui/react';
 import { createPost } from '../../Services/postServices';
 import { toast } from 'react-toastify';
 import { ProfileContext } from '../../Context/ProfileContext';
+import { useQueryClient } from '@tanstack/react-query';
 
 export default function CreatePost({callback}) {
 
@@ -23,7 +24,7 @@ export default function CreatePost({callback}) {
 
     const {profileData} = useContext(ProfileContext)
     
-
+    const queryClient = useQueryClient()
 
     function handleSelectedImage()
     {
@@ -55,7 +56,8 @@ export default function CreatePost({callback}) {
                 inputPhoto.current.value = ""
             }
 
-            callback()
+            // callback()
+            queryClient.invalidateQueries({queryKey:["getPosts"]})
 
         } catch (error) {
             console.log(error);
