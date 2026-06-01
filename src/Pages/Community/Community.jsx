@@ -37,10 +37,10 @@ export default function Community() {
     <>
       <div className='bg-[#F0F2F5] min-h-screen'>
             <div className="container pt-5 pb-5">
-                <div className="grid grid-cols-4 gap-5">
+                <div className="grid grid-cols-4 gap-5 items-start">
         
-                    <div className="col-span-1 hidden lg:block">
-                    <Tabs/>
+                    <div className="col-span-1 hidden lg:block xl:sticky xl:top-20">
+                        <Tabs/>
                     </div>
                     
                     <div className="col-span-4 lg:col-span-2 space-y-5">
@@ -61,8 +61,8 @@ export default function Community() {
                         }
                     </div>
                     
-                    <div className="col-span-1 hidden lg:block">
-                    <FriendReq/>
+                    <div className="col-span-1 hidden lg:block xl:sticky xl:top-20">
+                        <FriendReq/>
                     </div>
         
                 </div>
