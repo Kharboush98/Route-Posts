@@ -1,15 +1,21 @@
 import React, { useEffect, useState } from 'react'
-import { getAllUserPosts, getAllUserProfiles } from '../../Services/authServices';
+import { followUser, getAllUserPosts, getAllUserProfiles } from '../../Services/authServices';
 import { useParams } from 'react-router';
 import { MdOutlineEmail } from 'react-icons/md';
 import { FiUsers } from 'react-icons/fi';
 import PostCard from '../../Component/PostCard/PostCard';
+import { toast } from 'react-toastify';
 
 export default function ProfileDetails() {
 
     const {id} = useParams();
     const [posts , setPosts]= useState([]);
     const [user, setUser] = useState(null);
+
+    const [isLoading , setIsLoading] = useState();
+    
+    const [isFollowing, setIsFollowing] = useState(user?.isFollowing);
+
 
     
     async function getUser(UserId) {
@@ -30,6 +36,26 @@ export default function ProfileDetails() {
             getUserposts(id);
         }
     },[id])
+
+    useEffect(() => {
+        setIsFollowing(user?.isFollowing);
+    }, [user]);
+
+    async function follow(userId) {
+        try {
+            setIsLoading(true)
+            let response = await followUser(userId);
+            setIsFollowing(prev => !prev);
+            toast.success(response.data.message);
+
+        } catch (error) {
+            console.log(error);
+            toast.error("Something went wrong");
+
+        } finally {
+            setIsLoading(false)
+        }
+    }
 
     return (
         <>
@@ -75,9 +101,11 @@ export default function ProfileDetails() {
                                             <p className="mt-1 text-2xl font-black text-slate-900 sm:text-3xl">{user?.user.followingCount}</p>
                                         </div>
 
-                                        {user?.isFollowing ? 
+                                        {isFollowing ? 
                                         (
-                                            <button className='group flex-1 min-w-20 flex-wrap flex flex-col items-center justify-center rounded-2xl border border-slate-200 bg-white hover:bg-gray-200 cursor-pointer px-3 py-3 text-center sm:px-4 sm:py-4'>
+                                            <button onClick={()=> follow(id)}
+                                            disabled={isLoading}
+                                            className='group flex-1 min-w-20 flex-wrap flex flex-col items-center justify-center rounded-2xl border border-slate-200 bg-white hover:bg-gray-200 cursor-pointer px-3 py-3 text-center sm:px-4 sm:py-4'>
                                                 <p className="text-[11px] font-bold uppercase tracking-wide text-slate-500 sm:text-sm">
                                                     <span className='group-hover:hidden'>Followed ✔</span>
                                                     <span className='hidden group-hover:block text-red-500'>UnFollow</span>
@@ -86,7 +114,9 @@ export default function ProfileDetails() {
                                         ) 
                                         : 
                                         (
-                                            <button className='flex-1 min-w-20 flex-wrap flex flex-col items-center justify-center rounded-2xl border border-[#d7e7ff] bg-[#eef6ff] hover:bg-gray-200 cursor-pointer px-3 py-3 text-center sm:px-4 sm:py-4'>
+                                            <button onClick={()=> follow(id)} 
+                                            disabled={isLoading}
+                                            className='flex-1 min-w-20 flex-wrap flex flex-col items-center justify-center rounded-2xl border border-[#d7e7ff] bg-[#eef6ff] hover:bg-gray-200 cursor-pointer px-3 py-3 text-center sm:px-4 sm:py-4'>
                                                 <p className="text-[11px] font-bold uppercase tracking-wide text-[#0b57d0] sm:text-sm">Follow</p>
                                             </button>
                                         )
