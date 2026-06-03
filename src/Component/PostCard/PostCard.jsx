@@ -49,7 +49,7 @@ export default function PostCard({post}) {
             <PostHeader body={post.body} image={post.image} userId={post.user._id} id={post.id} photo={post.user?.photo} name={post.user?.name} username={post.user?.username} createdAt={post.createdAt} privacy={post?.privacy}/>
 
             {/* Body */}
-            <PostBody id={post.id} body={post.body} image={post.image}/>
+            <PostBody id={post.id} body={post.body} image={post.image} isShare={post.isShare} sharedPost={post.sharedPost}/>
             
             
             {/* post actions : like comment share stats*/}
