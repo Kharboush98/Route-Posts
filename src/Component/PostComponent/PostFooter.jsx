@@ -17,9 +17,10 @@ import CommentModal from '../CommentModal/CommentModal';
 import { likeUnLikePost } from '../../Services/postServices';
 import { FcLike } from "react-icons/fc";
 import { useMutation } from '@tanstack/react-query';
+import ShareModal from '../ShareModal/ShareModal';
 
 
-export default function PostFooter({id,userId, likes, likesArray = [] , shares , comments ,topComment}) {
+export default function PostFooter({id,userId, likes,body, image, user, likesArray = [] , shares , comments ,topComment}) {
 
     const [isLoading , setIsLoading] = useState();
 
@@ -31,6 +32,9 @@ export default function PostFooter({id,userId, likes, likesArray = [] , shares ,
     const [openCommentId, setOpenCommentId] = useState(null);
 
     const {profileData} = useContext(ProfileContext)  
+
+    // console.log("user in ShareModal:", user);
+    
 
     //Show all comments
     async function fetchAllComments(postId)
@@ -100,6 +104,8 @@ export default function PostFooter({id,userId, likes, likesArray = [] , shares ,
 
     //edit comment 
     const {isOpen, onOpen, onOpenChange} = useDisclosure();
+    const { isOpen: isShareOpen, onOpen: onShareOpen, onOpenChange: onShareOpenChange } = useDisclosure();
+
     const [editingComment, setEditingComment] = useState(null);
 
     //Like //  Unlike Post
@@ -238,7 +244,7 @@ export default function PostFooter({id,userId, likes, likesArray = [] , shares ,
                 <span>Comment</span>
             </button>
 
-            <button className='cursor-pointer flex items-center justify-center gap-1.5 rounded-md p-2 text-xs font-semibold transition-colors
+            <button onClick={()=> onShareOpen()} className='cursor-pointer flex items-center justify-center gap-1.5 rounded-md p-2 text-xs font-semibold transition-colors
             disabled:cursor-not-allowed disabled:opacity-50 sm:gap-2 sm:text-sm text-slate-600 hover:bg-slate-100'>
                 <AiOutlineRetweet />
                 <span>Share</span>
@@ -422,6 +428,8 @@ export default function PostFooter({id,userId, likes, likesArray = [] , shares ,
                 </button>
             </div>
         </>}
+
+        <ShareModal isOpen={isShareOpen} onOpenChange={onShareOpenChange} id={id} body={body} image={image} user={user}/>
 
     </>
   )

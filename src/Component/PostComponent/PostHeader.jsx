@@ -35,6 +35,9 @@ export default function PostHeader({body, image, userId, id, photo , name, usern
 
             // fetchAllPosts();
             queryClient.invalidateQueries({queryKey:["getPosts"]})
+            queryClient.invalidateQueries({ queryKey: ["getCommunityPosts"] });
+            queryClient.invalidateQueries({ queryKey: ["getMyPosts"] });   
+            queryClient.invalidateQueries({ queryKey: ["getBookmarks"] });   
 
         } catch (error) {
             console.log(error);

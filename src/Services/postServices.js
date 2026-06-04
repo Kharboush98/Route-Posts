@@ -74,6 +74,20 @@ export async function updatePost(formData , id)
     return data;
 }
 
+export async function sharePost(id , body)
+{
+    const token = localStorage.getItem("userToken");
+
+    let data = await axios.post(`${baseURL}/posts/${id}/share` , body , {
+        headers:{
+            "Authorization": `Bearer ${token}`,
+            "Content-Type" : "application/json",
+        }
+    })
+
+    return data;
+}
+
 export async function deletePostByID(id)
 {
     const token = localStorage.getItem("userToken");

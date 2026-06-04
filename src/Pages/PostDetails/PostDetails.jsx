@@ -19,11 +19,13 @@ export default function PostDetails() {
       const response = await getPostById(postId);
       console.log(response.data.data.post , 'details');  
       setPost(response.data.data.post);
+      console.log("user in postdetails:", post.user);
     }
 
     fetchPostDetails(id);
   },[id])
 
+  
 
   return (
     <>
@@ -38,7 +40,7 @@ export default function PostDetails() {
             
             
             {/* post actions : like comment share stats*/}
-            <PostFooter id={post.id} likes={post.likesCount} likesArrray={post.likes} shares={post.sharesCount} comments={post.commentsCount} topComment={post.topComment}/>
+            <PostFooter id={post.id} body={post.body} image={post.image} user={post.user} likes={post.likesCount} likesArray={post.likes} shares={post.sharesCount} comments={post.commentsCount} topComment={post.topComment}/>
 
           </article>
         </> : <PostSkeleton/>}

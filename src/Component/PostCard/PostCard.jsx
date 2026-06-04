@@ -53,7 +53,7 @@ export default function PostCard({post}) {
             
             
             {/* post actions : like comment share stats*/}
-            <PostFooter id={post.id} userId={post.user._id} likes={post.likesCount} likesArray={post.likes} shares={post.sharesCount} comments={post.commentsCount} topComment={post.topComment}/>
+            <PostFooter id={post.id} userId={post.user._id} body={post.body} image={post.image} user={post.user} likes={post.likesCount} likesArray={post.likes} shares={post.sharesCount} comments={post.commentsCount} topComment={post.topComment}/>
 
         </article>
       </div>
