@@ -60,7 +60,7 @@ export default function ProfileDetails() {
     return (
         <>
             <div className='bg-[#F0F2F5] min-h-screen'>
-                <div className="container px-3 py-4">
+                <div className="container py-4">
                     <section className='overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_2px_10px_rgba(15,23,42,.06)] sm:rounded-[28px]'>
                         {user?.user.cover ? 
                             <img src={user?.user.cover} alt={user?.user.name} className='relative w-full object-cover h-44 rounded-2xl sm:h-52 lg:h-60'></img> 
@@ -154,7 +154,7 @@ export default function ProfileDetails() {
                         <div className='space-y-3 pt-3'>
                             {posts.length > 0 ? 
                                 <>    
-                                    <div className='w-[75%] space-y-5 m-auto'>
+                                    <div className=' lg:w-[75%] space-y-5 m-auto'>
                                         {posts && posts.map((post)=> <PostCard key={post.id} post={post} />)}
                                     </div>          
                                 </>

@@ -16,6 +16,7 @@ import MyPosts from './Pages/MyPosts/MyPosts'
 import Community from './Pages/Community/Community'
 import Saved from './Pages/Saved/Saved'
 import ProfileDetails from './Pages/ProfileDetails/ProfileDetails'
+import Notifications from './Pages/NotificationsPage/Notifications'
 
 function App() {
 
@@ -31,6 +32,7 @@ function App() {
         {path:"myPosts" , element: <AppProtectedRoute> <MyPosts/> </AppProtectedRoute>},
         {path:"community" , element: <AppProtectedRoute> <Community/> </AppProtectedRoute>},
         {path:"saved" , element: <AppProtectedRoute> <Saved/> </AppProtectedRoute>},
+        {path:"notification" , element: <AppProtectedRoute> <Notifications/> </AppProtectedRoute>},
         // {path:"*" , element: <AppProtectedRoute> <NewsFeed/> </AppProtectedRoute>}
         {path:"*" , element: <NotFound/>}
       ]
