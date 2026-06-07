@@ -8,6 +8,7 @@ import { useState } from 'react'
 import PostSkeleton from '../../Component/Skeletons/PostSkeleton'
 import { useQuery } from '@tanstack/react-query'
 import { Pagination } from '@heroui/react'
+import MobileTabs from '../../Component/MobileTabs/MobileTabs'
 
 export default function NewsFeed() {
 
@@ -65,6 +66,8 @@ export default function NewsFeed() {
             </div>
             
             <div className="col-span-4 lg:col-span-3 xl:col-span-2 space-y-5">
+              <MobileTabs/>
+
               {/*
               Non-react query way
               <CreatePost callback={fetchAllPosts}/>

@@ -6,6 +6,7 @@ import { getAllUserPosts } from '../../Services/authServices';
 import PostCard from '../../Component/PostCard/PostCard';
 import { useQuery } from '@tanstack/react-query';
 import PostSkeleton from '../../Component/Skeletons/PostSkeleton';
+import MobileTabs from '../../Component/MobileTabs/MobileTabs';
 
 export default function MyPosts() {
 
@@ -43,6 +44,8 @@ export default function MyPosts() {
                     </div>
                     
                     <div className="col-span-4 lg:col-span-2 space-y-5">
+                        <MobileTabs/>
+
                         {isLoading ? [...Array(10)].map((_, index) => <PostSkeleton key={index} />) 
                         :
                         posts?.length > 0 ? 

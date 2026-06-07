@@ -6,6 +6,7 @@ import { ProfileContext } from '../../Context/ProfileContext'
 import { getAllBookmarks } from '../../Services/authServices'
 import { useQuery } from '@tanstack/react-query'
 import PostSkeleton from '../../Component/Skeletons/PostSkeleton'
+import MobileTabs from '../../Component/MobileTabs/MobileTabs'
 
 export default function Saved() {
 
@@ -44,6 +45,7 @@ export default function Saved() {
                     </div>
                     
                     <div className="col-span-4 lg:col-span-2 space-y-5">
+                        <MobileTabs/>
                         {isLoading ? [...Array(10)].map((_, index) => <PostSkeleton key={index} />) 
                         : 
                         posts?.length > 0 ? 

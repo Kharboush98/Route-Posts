@@ -6,6 +6,7 @@ import { getAllUserFollowersPosts } from '../../Services/postServices';
 import PostCard from '../../Component/PostCard/PostCard';
 import PostSkeleton from '../../Component/Skeletons/PostSkeleton';
 import { useQuery } from '@tanstack/react-query';
+import MobileTabs from '../../Component/MobileTabs/MobileTabs';
 
 export default function Community() {
 
@@ -44,6 +45,8 @@ export default function Community() {
                     </div>
                     
                     <div className="col-span-4 lg:col-span-2 space-y-5">
+                        <MobileTabs/>
+
                         {isLoading ? [...Array(10)].map((_, index) => <PostSkeleton key={index} />) 
                         : 
                         posts?.length > 0 ? 
