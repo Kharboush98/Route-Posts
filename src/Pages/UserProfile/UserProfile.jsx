@@ -1,29 +1,90 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import logo from "../../assets/imgs/route.jpg"
 import { MdOutlineEmail } from 'react-icons/md'
 import { FiUsers } from 'react-icons/fi'
 import { ProfileContext } from '../../Context/ProfileContext'
-import { getAllUserPosts } from '../../Services/authServices'
+import { getAllUserPosts, uploadProfilePic } from '../../Services/authServices'
 import PostCard from '../../Component/PostCard/PostCard'
+import { FaCamera } from 'react-icons/fa6'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { Input } from '@heroui/react'
+import { toast } from 'react-toastify'
 
 export default function UserProfile() {
 
     const {profileData} = useContext(ProfileContext)
-    const [posts , setPosts]= useState([]);
+    const queryClient = useQueryClient()
     
+    // const [posts , setPosts]= useState([]);
     
-    async function getUsersPosts(userId) {
-        const response = await getAllUserPosts(userId);
-        console.log(response.data.data.posts);
-        setPosts(response.data.data.posts);
-    }
+    // async function getUsersPosts(userId) {
+    //     const response = await getAllUserPosts(userId);
+    //     console.log(response.data.data.posts);
+    //     setPosts(response.data.data.posts);
+    // }
+
+    const {data : posts} = useQuery({
+        queryKey:["getUserProfilePosts", profileData?._id],
+        queryFn: ()=>getAllUserPosts(profileData?._id),
+        refetchInterval:10000,
+        select:(data) => data?.data.data.posts,
+        enabled: !!profileData?._id   
+    })
 
     useEffect(()=> {
         if(profileData?._id)
         {
-            getUsersPosts(profileData?._id);
+            // getUsersPosts(profileData?._id);
+            queryClient.invalidateQueries({queryKey:["getUserProfilePosts"]})
+
         }
     },[profileData])
+
+    //profile pic
+
+    const [displayPhoto , SetDisplayPhoto] = useState("")
+    const [sendPhoto , SetSendPhoto] = useState("")
+    const [postContent , SetPostContent] = useState("")
+    const inputPhoto = useRef();
+
+    function handleSelectedImage()
+    {
+        console.log("input pic" , inputPhoto.current.files[0]);
+        // //format for photo to send to the end point
+        SetSendPhoto(inputPhoto.current.files[0])
+
+        // //format to display the photo
+        SetDisplayPhoto(URL.createObjectURL(inputPhoto.current.files[0]))
+        
+        handleFetchingPost();
+    }
+
+    const {mutate : handleFetchingPost , isPending: isLoadingPP} = useMutation({
+        mutationFn: () => {
+            const formData = new FormData();
+            formData.append("photo", sendPhoto);
+            return uploadProfilePic(formData);
+        },
+        onSuccess: (response) => {
+            toast.success(response.data.message);
+            SetSendPhoto("");
+            SetDisplayPhoto("");
+            if (inputPhoto.current) {
+                inputPhoto.current.value = "";
+            }
+        },
+        onError: (error) => {
+            console.log(error);
+            toast.error("Post//photo wasn't uploaded");
+        }
+    })
+
+    // useEffect(()=>{
+    //     if (sendPhoto) {
+    //         handleFetchingPost();
+    //     }
+    // },[sendPhoto])
+
 
     return (
     <>
@@ -50,9 +111,14 @@ export default function UserProfile() {
                                 <div className='min-w-0'>
                                     <div className="flex items-end gap-4">
                                         <div className='group/avatar relative shrink-0'>
-                                            <button type='button' className='cursor-zoom-in rounded-full'>
+                                            <button type='button' className='rounded-full'>
                                                 <img src={profileData?.photo} alt={profileData?.name} className='h-28 w-28 rounded-full border-4 border-white object-cover shadow-md ring-2 ring-[#dbeafe]'/>
                                             </button>
+
+                                            <label className="absolute bottom-1 right-1 flex h-9 w-9 cursor-pointer items-center justify-center rounded-full bg-[#1877f2] text-white opacity-100 shadow-sm transition duration-200 hover:bg-[#166fe5] sm:opacity-0 sm:group-hover/avatar:opacity-100 sm:group-focus-within/avatar:opacity-100">
+                                                <FaCamera/>
+                                                <input onInput={()=> handleSelectedImage()} ref={inputPhoto} accept="image/*" className="hidden" type="file"></input>
+                                            </label>
                                         </div>
 
                                         <div className='min-w-0 pb-1'>
@@ -101,7 +167,7 @@ export default function UserProfile() {
                                 <div className='grid gap-3 sm:grid-cols-2 lg:grid-cols-1'>
                                     <div className='rounded-2xl border border-[#dbeafe] bg-[#f6faff] px-4 py-3'>
                                         <p className='text-xs font-bold uppercase tracking-wide text-[#1f4f96]'>My Posts</p>
-                                        <p className='mt-1 text-2xl font-black text-slate-900'>{posts.length}</p>
+                                        <p className='mt-1 text-2xl font-black text-slate-900'>{posts?.length}</p>
                                     </div>
 
                                     <div className='rounded-2xl border border-[#dbeafe] bg-[#f6faff] px-4 py-3'>
@@ -128,7 +194,7 @@ export default function UserProfile() {
                     </div>
 
                     <div className='space-y-3'>
-                        {posts.length > 0 ? 
+                        {posts?.length > 0 ? 
                             <>    
                                 <div className='w-[75%] space-y-5 m-auto'>
                                     {posts && posts.map((post)=> <PostCard key={post.id} post={post} />)}

@@ -14,7 +14,7 @@ import {
 import { useContext, useRef, useState } from "react";
 import { ProfileContext } from "../../Context/ProfileContext";
 import { FaImage, FaRegSmile } from "react-icons/fa";
-import { createPost, updatePost } from "../../Services/postServices";
+import { updatePost } from "../../Services/postServices";
 import { toast } from "react-toastify";
 import { useQueryClient } from "@tanstack/react-query";
 

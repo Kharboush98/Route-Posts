@@ -78,7 +78,7 @@ export default function FriendReq() {
                         <div className="flex items-center justify-between gap-2">
                             <Link to={`/profile/${_user?._id}`}
                                 className='flex min-w-0 items-center gap-2 rounded-lg px-1 py-1 text-left transition hover:bg-slate-50'>
-                                <img src={_user?.photo} alt="" className='class="h-10 w-10 rounded-full object-cover'/>
+                                <img src={_user?.photo} alt="" className='h-10 w-10 rounded-full object-cover'/>
                                 <div className="min-w-0">
                                     <p className='truncate text-sm font-bold text-slate-900 hover:underline'>{_user?.name}</p>
                                     <p className='truncate text-xs text-slate-500'>@{_user?.username}</p>

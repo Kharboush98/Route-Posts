@@ -58,8 +58,8 @@ export default function SettingsPage() {
         <div className="container px-3 py-4">
             <div className='rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6'>
                 <div>
-                    <h1 class="text-xl font-extrabold text-slate-900 sm:text-2xl">Change Password</h1>
-                    <p class="text-sm text-slate-500">Keep your account secure by using a strong password.</p>
+                    <h1 className="text-xl font-extrabold text-slate-900 sm:text-2xl">Change Password</h1>
+                    <p className="text-sm text-slate-500">Keep your account secure by using a strong password.</p>
                 </div>
 
                 <form className='space-y-3.5 mt-5' onSubmit={handleSubmit(submit)}>

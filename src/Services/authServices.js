@@ -105,3 +105,18 @@ export async function followUser(userId)
 
     return data;
 }
+
+export async function uploadProfilePic(formData)
+{
+    const token = localStorage.getItem("userToken");
+
+    let data = await axios.put(`${baseURL}/users/upload-photo` , 
+        formData ,
+        {
+            headers:{
+                "Authorization": `Bearer ${token}`
+            }
+        })
+
+    return data;
+}
