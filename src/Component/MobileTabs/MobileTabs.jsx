@@ -17,7 +17,7 @@ export default function MobileTabs() {
 
     return (
       <>
-        <div className="rounded-2xl border border-slate-200 bg-white p-2 shadow-sm xl:hidden">
+        <div className="rounded-2xl border border-slate-200 bg-white p-2 shadow-sm lg:hidden">
           <div className="grid grid-cols-2 gap-2">
                 {tabs.map(({to, name , icon:Icon , isActive}) =>(
                     <NavLink 

@@ -44,7 +44,7 @@ export default function Community() {
                         <Tabs/>
                     </div>
                     
-                    <div className="col-span-4 lg:col-span-2 space-y-5">
+                    <div className="col-span-4 lg:col-span-3 xl:col-span-2 space-y-5">
                         <MobileTabs/>
 
                         {isLoading ? [...Array(10)].map((_, index) => <PostSkeleton key={index} />) 
@@ -64,7 +64,7 @@ export default function Community() {
                         }
                     </div>
                     
-                    <div className="col-span-1 hidden lg:block xl:sticky xl:top-20">
+                    <div className="col-span-1 hidden lg:hidden xl:block xl:sticky xl:top-20">
                         <FriendReq/>
                     </div>
         
