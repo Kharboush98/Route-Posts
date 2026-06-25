@@ -38,7 +38,9 @@
 
 @layer utilities{
     .container{
-        width: 80%;
+        width: 85%;
         margin: auto;
+        padding-left: 0;
+        padding-right: 0;
     }
 }

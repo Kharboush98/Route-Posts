@@ -154,7 +154,7 @@ export default function ProfileDetails() {
                         <div className='space-y-3 pt-3'>
                             {posts.length > 0 ? 
                                 <>    
-                                    <div className=' lg:w-[75%] space-y-5 m-auto'>
+                                    <div className=' lg:w-[60%] space-y-5 m-auto'>
                                         {posts && posts.map((post)=> <PostCard key={post.id} post={post} />)}
                                     </div>          
                                 </>

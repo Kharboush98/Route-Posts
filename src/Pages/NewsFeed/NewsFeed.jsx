@@ -59,13 +59,13 @@ export default function NewsFeed() {
     <>
       <div className='bg-[#F0F2F5] min-h-screen'>
         <div className="container pt-5 pb-5">
-          <div className="grid grid-cols-4 gap-5 items-start">
+          <div className="container grid gap-4 xl:grid-cols-[240px_minmax(0,1fr)_300px]">
 
-            <div className="col-span-1 hidden lg:block xl:sticky xl:top-20">
+            <div className="hidden lg:block xl:sticky xl:top-20">
               <Tabs/>
             </div>
             
-            <div className="col-span-4 lg:col-span-3 xl:col-span-2 space-y-5">
+            <div className="space-y-5">
               <MobileTabs/>
 
               {/*
@@ -92,7 +92,7 @@ export default function NewsFeed() {
               
             </div>
             
-            <div className="col-span-1 hidden lg:hidden xl:block xl:sticky xl:top-20">
+            <div className="hidden lg:hidden xl:block xl:sticky xl:top-20">
               <FriendReq/>
             </div>
 
