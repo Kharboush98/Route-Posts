@@ -38,7 +38,7 @@ export default function Community() {
     <>
       <div className='bg-[#F0F2F5] min-h-screen'>
             <div className="container pt-5 pb-5">
-                <div className="container grid gap-4 xl:grid-cols-[240px_minmax(0,1fr)_300px]">
+                <div className="container grid gap-4 xl:grid-cols-[240px_minmax(0,1fr)_300px] lg:grid-cols-[240px_minmax(0,1fr)]">
         
                     <div className="hidden lg:block xl:sticky xl:top-20">
                         <Tabs/>

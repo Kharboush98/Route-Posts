@@ -56,22 +56,22 @@ export default function NavbarComponent() {
               <NavLink className={({ isActive }) => isActive ? "nav-link-active" : "nav-link"} 
                 to="/">
                 <FaHome className="text-current font-extrabold" />
-                <span className="hidden sm:inline">Feed</span>
-                <span className="sr-only sm:hidden">Feed</span>
+                <span className="hidden md:inline">Feed</span>
+                <span className="sr-only md:hidden">Feed</span>
               </NavLink>
 
               <NavLink className={({ isActive }) => isActive ? "nav-link-active" : "nav-link"} 
                 to="/profile">
                 <FaUser className="text-current font-extrabold" />
-                <span className="hidden sm:inline">Profile</span>
-                <span className="sr-only sm:hidden">Profile</span>
+                <span className="hidden md:inline">Profile</span>
+                <span className="sr-only md:hidden">Profile</span>
               </NavLink>
               
               <NavLink className={({ isActive }) => isActive ? "nav-link-active" : "nav-link"} 
                 to="/notification">
                 <IoChatbubbleSharp className="text-current font-extrabold" />
-                <span className="hidden sm:inline">Notification</span>
-                <span className="sr-only sm:hidden">Notification</span>
+                <span className="hidden md:inline">Notification</span>
+                <span className="sr-only md:hidden">Notification</span>
               </NavLink>
             </nav>
 

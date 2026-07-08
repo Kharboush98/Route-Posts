@@ -319,7 +319,9 @@ export default function PostFooter({id,userId, likes,body, image, user, likesArr
             <img src={getAvatar(topComment.commentCreator?.photo)} alt={topComment.commentCreator?.name || 'unknown'} className='h-8 w-8 rounded-full shrink-8' />
             <div className='min-w-0 flex-1'>
                 <div className='bg-gray-100 rounded-2xl rounded-tl-sm px-3 py-2 inline-block'>
-                    <p className='text-gray-900 text-[15px] font-semibold'>{topComment.commentCreator?.name ?? 'unkown'}</p>
+                    <Link to={`/profile/${topComment.commentCreator?._id}`}>
+                        <p className='text-gray-900 text-[15px] font-semibold'>{topComment.commentCreator?.name ?? 'unkown'}</p>
+                    </Link>
                     <p className='text-gray-800 text-[15px] mt-0.5'>{topComment?.content}</p>
                 </div>
                 <p className='text-gray-500 text-[12px] mt-1 ml-1'>{new Date(topComment?.createdAt).toLocaleString()}</p>
@@ -366,7 +368,9 @@ export default function PostFooter({id,userId, likes,body, image, user, likesArr
             <img src={getAvatar(comment.commentCreator?.photo)} alt={comment.commentCreator?.name || 'unknown'} className='h-8 w-8 rounded-full shrink-8' />
             <div className='min-w-0 flex-1'>
                 <div className='bg-gray-100 rounded-2xl rounded-tl-sm px-3 py-2 inline-block'>
-                    <p className='text-gray-900 text-[15px] font-semibold'>{comment.commentCreator?.name ?? 'unkown'}</p>
+                    <Link to={`/profile/${comment.commentCreator?._id}`}>
+                        <p className='text-gray-900 text-[15px] font-semibold'>{comment.commentCreator?.name ?? 'unkown'}</p>
+                    </Link> 
                     <p className='text-gray-800 text-[15px] mt-0.5'>{comment?.content}</p>
                 </div>
                 <p className='text-gray-500 text-[12px] mt-1 ml-1'>{new Date(comment?.createdAt).toLocaleString()}</p>

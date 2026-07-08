@@ -158,12 +158,12 @@ export default function Notifications() {
                       <div className="min-w-0 flex-1">
                         <div className="flex flex-wrap items-start justify-between gap-1.5 sm:gap-2">
                           <p className="text-sm leading-6 text-slate-800">
-                            <button
+                            <Link to={`/profile/${not?.actor?._id}`}
                               type="button"
-                              className="font-extrabold hover:text-[#1877f2] hover:underline"
+                              className="font-extrabold hover:text-[#1877f2] hover:underline cursor-pointer"
                             >
                               {not?.actor.name}
-                            </button>{" "}
+                            </Link>{" "}
                             {notificationMessages[not?.type] ??
                               "interacted with your post"}
                           </p>
