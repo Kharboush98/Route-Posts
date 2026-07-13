@@ -46,7 +46,7 @@ export default function PostCard({post}) {
       <div className='space-y-4'>
         <article className='overflow-visible rounded-xl border border-slate-200 bg-white shadow-sm'>
             {/* header */}
-            <PostHeader body={post.body} image={post.image} userId={post.user._id} id={post.id} photo={post.user?.photo} name={post.user?.name} username={post.user?.username} createdAt={post.createdAt} privacy={post?.privacy}/>
+            <PostHeader body={post.body} image={post.image} userId={post.user._id} id={post.id} photo={post.user?.photo} name={post.user?.name} username={post.user?.username} createdAt={post.createdAt} privacy={post?.privacy} bookmarked={post?.bookmarked}/>
 
             {/* Body */}
             <PostBody id={post.id} body={post.body} image={post.image} isShare={post.isShare} sharedPost={post.sharedPost}/>

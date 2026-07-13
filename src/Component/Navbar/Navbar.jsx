@@ -33,7 +33,7 @@ export default function NavbarComponent() {
 
   const navigate = useNavigate();
 
-  console.log(profileData);
+  // console.log(profileData);
   
 
   function handleLogout()

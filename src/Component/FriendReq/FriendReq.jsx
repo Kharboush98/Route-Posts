@@ -20,7 +20,7 @@ export default function FriendReq() {
     async function getFollowersSuggestion()
     {
         const response = await getFollowSuggestion();
-        console.log(response.data.data.suggestions);
+        // console.log(response.data.data.suggestions);
         setUsers(response.data.data.suggestions);
     }
 

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { BiWorld } from 'react-icons/bi'
+import { BiLoader, BiWorld } from 'react-icons/bi'
 import { getAvatar } from '../PostCard/PostCard'
 import { BsThreeDots } from 'react-icons/bs'
 import { FaBookmark } from 'react-icons/fa'
@@ -7,13 +7,13 @@ import { ProfileContext } from '../../Context/ProfileContext'
 import { MdDelete, MdOutlineModeEdit } from 'react-icons/md'
 import { FiDelete } from 'react-icons/fi'
 import { toast } from 'react-toastify'
-import { deletePostByID } from '../../Services/postServices'
+import { BookmarkPost, deletePostByID } from '../../Services/postServices'
 import PostModal from '../PostModal/PostModal'
 import { useDisclosure } from '@heroui/react'
 import { Link } from 'react-router'
-import { useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 
-export default function PostHeader({body, image, userId, id, photo , name, username, createdAt , privacy}) {
+export default function PostHeader({body, image, userId, id, photo , name, username, createdAt , privacy , bookmarked}) {
 
     const [options , setOptions] = useState(false)
 
@@ -42,7 +42,18 @@ export default function PostHeader({body, image, userId, id, photo , name, usern
         } catch (error) {
             console.log(error);
         }
-    }
+    }    
+
+    const {mutate:BookmarkPostFn , isPending: isLoadingBookmark } = useMutation({
+        mutationFn:(postId)=> BookmarkPost(postId),
+        onSuccess:(response)=>{
+            toast.success(response.data.message)
+            queryClient.invalidateQueries({ queryKey: ["getBookmarks"] });   
+        },
+        onError:(error)=>{
+            toast.error("Bookmark Failed")
+        }
+    })
     
 
   return (
@@ -91,9 +102,11 @@ export default function PostHeader({body, image, userId, id, photo , name, usern
                         :  
                         options && (
                             <div className="absolute right-0 z-20 mt-2 w-44 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-lg">
-                            <button className='cursor-pointer flex w-full items-center gap-2 px-3 py-2 text-left text-sm font-semibold text-slate-700 hover:bg-slate-50'>
-                                <FaBookmark/>
-                                Bookmark
+                            <button
+                            onClick={()=> {BookmarkPostFn(id); setOptions(!options)}}
+                            className='cursor-pointer flex w-full items-center gap-2 px-3 py-2 text-left text-sm font-semibold text-slate-700 hover:bg-slate-50'>
+                                {isLoadingBookmark ? <BiLoader className='animate-spin'/> : <FaBookmark/>}
+                                {bookmarked ? "UnBookmark" : "Bookmark"}
                             </button>
                         </div>
                         )

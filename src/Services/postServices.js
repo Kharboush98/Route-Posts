@@ -116,3 +116,18 @@ export async function likeUnLikePost(id)
 
     return data;
 }
+
+export async function BookmarkPost(id)
+{
+    const token = localStorage.getItem("userToken");
+
+    let data = await axios.put(`${baseURL}/posts/${id}/bookmark` , 
+        {},
+        {
+        headers:{
+            "Authorization": `Bearer ${token}`
+        }
+    });
+
+    return data;
+}
