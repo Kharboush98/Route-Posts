@@ -90,7 +90,7 @@ export default function UserProfile() {
     <>
         <div className='bg-[#F0F2F5] min-h-screen'>
             <div className="container px-3 py-4">
-                <section className='overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_2px_10px_rgba(15,23,42,.06)] sm:rounded-[28px]'>
+                <section className='container overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_2px_10px_rgba(15,23,42,.06)] sm:rounded-[28px]'>
                     {/* CoverPhoto */}
                     <div className='group/cover relative h-44 rounded-2xl bg-[linear-gradient(112deg,#0f172a_0%,#1e3a5f_36%,#2b5178_72%,#5f8fb8_100%)] sm:h-52 lg:h-60'>
                         <div className='pointer-events-none absolute right-2 top-2 z-10 flex max-w-[90%] flex-wrap items-center justify-end gap-1.5 opacity-100 transition 
@@ -181,15 +181,17 @@ export default function UserProfile() {
                 </section>
 
                 <section>
-                    <div className='my-5 flex flex-wrap items-center justify-between gap-2 rounded-2xl border border-slate-200 bg-white p-3 shadow-sm'>
-                        <div className='grid w-full grid-cols-2 gap-2 rounded-xl bg-slate-100 p-1.5 sm:inline-flex sm:w-auto sm:gap-0'>
-                            <button className='inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-bold transition bg-white text-[#1877f2] shadow-sm'>
-                                My Posts
-                            </button>
+                    <div className='container'>
+                        <div className='my-5 flex flex-wrap items-center justify-between gap-2 rounded-2xl border border-slate-200 bg-white p-3 shadow-sm'>
+                            <div className='grid w-full grid-cols-2 gap-2 rounded-xl bg-slate-100 p-1.5 sm:inline-flex sm:w-auto sm:gap-0'>
+                                <button className='inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-bold transition bg-white text-[#1877f2] shadow-sm'>
+                                    My Posts
+                                </button>
 
-                            <button className='inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-bold transition text-slate-600 hover:text-slate-900'>
-                                Saved
-                            </button>
+                                <button className='inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-bold transition text-slate-600 hover:text-slate-900'>
+                                    Saved
+                                </button>
+                            </div>
                         </div>
                     </div>
 
